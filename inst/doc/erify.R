@@ -1,0 +1,123 @@
+## ---- include = FALSE---------------------------------------------------------
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  error = TRUE
+)
+
+## -----------------------------------------------------------------------------
+# print `what` `n` times
+emphasize <- function(what, n) {
+  for (i in 1:n) {
+    cat(what, "\n")
+  }
+}
+
+# example
+emphasize("You're beautiful!", 3)
+
+## -----------------------------------------------------------------------------
+emphasize(c, 3)
+
+## -----------------------------------------------------------------------------
+library(erify)
+
+emphasize <- function(what, n) {
+  # check the type of `what`
+  check_type(what, "character")
+  
+  # main
+  for (i in 1:n) {
+    cat(what, "\n")
+  }
+}
+
+emphasize(c, 3)
+
+## -----------------------------------------------------------------------------
+emphasize <- function(what, n) {
+  # check the type of `what`
+  check_type(what, "character")
+  # check the length of `what`
+  check_length(what, 1)
+  
+  # main
+  for (i in 1:n) {
+    cat(what, "\n")
+  }
+}
+
+emphasize(c("apple", "orange"), 3)
+
+## -----------------------------------------------------------------------------
+emphasize <- function(what, n) {
+  # check the type of `what`
+  check_type(what, "character")
+  # check the length of `what`
+  check_length(what, c(0, NA))
+  
+  # main
+  for (i in 1:n) {
+    cat(what, "\n")
+  }
+}
+
+emphasize(character(0), 3)
+
+## -----------------------------------------------------------------------------
+emphasize("You're beautiful again!", 3)
+
+## -----------------------------------------------------------------------------
+arg <- "I'm invalid."
+
+# check the content of `arg`
+check_content(arg, c("yes", "no"))
+
+## -----------------------------------------------------------------------------
+check_content(arg, c("yes", "no"), general = "You are wrong.")
+
+## -----------------------------------------------------------------------------
+check_content(arg, c("yes", "no"), specifics = "You are wrong.")
+
+## -----------------------------------------------------------------------------
+specifics <- c(x = "You're wrong.", i = "But you're beautiful.")
+check_content(arg, c("yes", "no"), specifics = specifics)
+
+## -----------------------------------------------------------------------------
+check_content(arg, c("yes", "no"), supplement = "I'm Peter, by the way.")
+
+## -----------------------------------------------------------------------------
+general <- "You're beautiful."
+
+specifics <- c(
+  i = "Your eyes are big.",
+  i = "Your hair is long.",
+  x = "But you broke my heart."
+)
+
+supplement <- "I'am Mr. Sad."
+
+s <- Statement(general, specifics, supplement)
+s
+
+## -----------------------------------------------------------------------------
+trigger(s)
+
+## -----------------------------------------------------------------------------
+trigger(s, as = "message")
+
+## -----------------------------------------------------------------------------
+check_positive <- function(x) {
+  check_type(x, c("integer", "double"))
+  check_length(x, 1)
+  
+  if (is.na(x) || x <= 0) {
+    general <- "`x` must be a positive number."
+    specifics <- "`x` is `{x}`."
+    s <- Statement(general, specifics, env = list(x = x))
+    trigger(s)
+  }
+}
+
+check_positive(-2)
+

@@ -1,0 +1,16 @@
+80bb2c95eef4cebd00d33abe8235d279 *DESCRIPTION
+a04bf5a5bdd73df199591e8db02a04a7 *LICENSE
+d2fdabc37066533bbcc863e5dee75531 *NAMESPACE
+0fbb1f01ffd509c56a5bab61e23838da *R/check.R
+212b11a674ff9392980490fe3e508f07 *R/erify.R
+11fa3b1344d8ecb967962f0e18c0a83d *R/statement.R
+1c956b4344ac1b82293eb1661a40ad21 *README.md
+8e0a4c0c8e5cfc00400b8b99b475024e *build/vignette.rds
+d395dc2cd1c8873c6f2ab35158084963 *inst/doc/erify.R
+3643e3a40ddaaa64f2c90a92debce34f *inst/doc/erify.Rmd
+a8aaa56836df58bbf194e52706a2da08 *inst/doc/erify.html
+8a80516b4ae6c4ac623d9751cade6eb5 *man/Statement.Rd
+3da2561ff8577a9aaaba86f436c7c05d *man/figures/logo.png
+ec577df696d5f7545bbf532436ce9aa0 *man/trigger.Rd
+8e288a00fcfe9e4e0cee700c0035beac *man/validators.Rd
+3643e3a40ddaaa64f2c90a92debce34f *vignettes/erify.Rmd
