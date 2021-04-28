@@ -6,6 +6,9 @@ knitr::opts_chunk$set(
 )
 
 ## -----------------------------------------------------------------------------
+library(erify)
+
+## -----------------------------------------------------------------------------
 # print `what` `n` times
 emphasize <- function(what, n) {
   for (i in 1:n) {
@@ -20,8 +23,6 @@ emphasize("You're beautiful!", 3)
 emphasize(c, 3)
 
 ## -----------------------------------------------------------------------------
-library(erify)
-
 emphasize <- function(what, n) {
   # check the type of `what`
   check_type(what, "character")
@@ -77,14 +78,11 @@ check_content(arg, c("yes", "no"))
 check_content(arg, c("yes", "no"), general = "You are wrong.")
 
 ## -----------------------------------------------------------------------------
-check_content(arg, c("yes", "no"), specifics = "You are wrong.")
+check_content(arg, c("yes", "no"), specific = "You are wrong.")
 
 ## -----------------------------------------------------------------------------
-specifics <- c(x = "You're wrong.", i = "But you're beautiful.")
-check_content(arg, c("yes", "no"), specifics = specifics)
-
-## -----------------------------------------------------------------------------
-check_content(arg, c("yes", "no"), supplement = "I'm Peter, by the way.")
+supplement <- c(x = "You're wrong.", i = "But you're beautiful.")
+check_content(arg, c("yes", "no"), supplement = supplement)
 
 ## -----------------------------------------------------------------------------
 general <- "You're beautiful."
@@ -95,9 +93,7 @@ specifics <- c(
   x = "But you broke my heart."
 )
 
-supplement <- "I'am Mr. Sad."
-
-s <- Statement(general, specifics, supplement)
+s <- Statement(general, specifics)
 s
 
 ## -----------------------------------------------------------------------------
@@ -120,4 +116,30 @@ check_positive <- function(x) {
 }
 
 check_positive(-2)
+
+## -----------------------------------------------------------------------------
+x <- c("Pink Floyd", "Pink Freud", "Pink Florida")
+join(x, "and")
+
+## -----------------------------------------------------------------------------
+cat(back_quote(x))
+
+back_quote(c(1, 2, NA))
+
+## -----------------------------------------------------------------------------
+arg <- "Pink Florence"
+check_content(arg, x)
+
+## -----------------------------------------------------------------------------
+is_rmd()
+# the code is running in a R Markdown file
+
+where()
+# the output format is HTML
+
+is_rstudio()
+# not in RStudio
+
+is_jupyter()
+# not in a Jupyter Notebook
 

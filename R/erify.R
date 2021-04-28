@@ -5,23 +5,41 @@ NULL
 utils::globalVariables(".")
 
 
-join <- function(words, conjunction = "or") {
-  l <- length(words)
+.onLoad <- function(libname, pkgname) {
+  context <- where()
 
-  if (l == 1) {
-    return(words)
+  if (context == "latex") {
+    bullets <- list(x = "*", i = "*")
+
+  } else if (context %in% c("html", "docx", "rmd", "gfm")) {
+    bullets <- list(x = "\u2716", i = "\u2139")
+
+  } else {
+    bullets <- list(
+      x = "\u001b[0;31m\u2716\u001b[0m",
+      i = "\u001b[0;36m\u2139\u001b[0m"
+    )
   }
 
-  paste(
-    paste(words[-l], collapse = ", "),
-    conjunction,
-    words[l]
+  prepend <- ifelse(is_rmd(), "(erify)", "\u001b[1;31m(erify)\u001b[0m")
+  general <- paste(prepend, "{.general}")
+
+  ops <- list(
+    erify.bullets = bullets,
+    erify.prepend = prepend,
+    erify.general = general
   )
+
+  options(ops)
 }
 
 
-glue <- function(x, env = parent.frame()) {
-  x %>%
-    glue::glue(.envir = env) %>%
-    unclass()
+.onUnload <- function(libpath) {
+  ops <- list(
+    erify.bullets = NULL,
+    erify.prepend = NULL,
+    erify.general = NULL
+  )
+
+  options(ops)
 }

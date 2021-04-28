@@ -1,7 +1,23 @@
 
 # erify <img src="man/figures/logo.png" align="right" alt="logo" width="120"/>
 
+<!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
 Check arguments, and generate readable error messages.
+
+## Motivation
+
+When creating functions for other people to use, you always need to
+
+1.  check if the arguments passed by users are valid, and if not,
+2.  generate informative and good-formatted error messages in a
+    consistent style.
+
+erify serves the exact purpose.
 
 ## Installation
 
@@ -22,43 +38,58 @@ devtools::install_github("flujoo/erify")
 
 ## Example
 
-Load erify:
+Suppose you are creating a function which prints a string several times
+to emphasize it:
 
 ``` r
-library(erify)
+# print `what` `n` times
+emphasize <- function(what, n) {
+  for (i in 1:n) {
+    cat(what, "\n")
+  }
+}
+
+# example
+emphasize("You're beautiful!", 3)
+#> You're beautiful! 
+#> You're beautiful! 
+#> You're beautiful!
 ```
 
-Check if the following argument is valid:
+And suppose a novice user accidentally passes a function to argument
+`what`, he/she will get an error message which is not very readable:
 
 ``` r
-arg <- "I'm invalid."
+emphasize(c, 3)
+#> Error in cat(what, "\n"): argument 1 (type 'builtin') cannot be handled by 'cat'
 ```
 
-For example, check if it has valid type:
+You can improve this by adding erify’s `check_type()` into
+`emphasize()`:
 
 ``` r
-check_type(arg, "integer")
-#> Error: `arg` must have type integer.
+emphasize <- function(what, n) {
+  # check the type of `what`
+  erify::check_type(what, "character")
+  
+  # main
+  for (i in 1:n) {
+    cat(what, "\n")
+  }
+}
+
+emphasize(c, 3)
+#> Error: `what` must have type character.
 #> 
-#> ✖ `arg` has type character.
+#> ✖ `what` has type builtin.
 ```
 
-Check if it has valid length:
-
-``` r
-check_length(arg, 1)
-```
-
-Or check if it is a positive integer:
-
-``` r
-check_n(arg)
-#> Error: `arg` must be a single positive integer.
-#> 
-#> ✖ `arg` has type character.
-```
+In the above code, `check_type(what, "character")` checks if `what` has
+type character, and if not, generates improved error message.
 
 ## More
 
-See `vignette("erify", package = "erify")` for a gentle introduction to
-erify.
+You can add more functions to check arguments, customize error messages,
+and create your own check functions.
+
+See `vignette("erify")` for a gentle introduction to erify.
