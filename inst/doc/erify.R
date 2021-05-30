@@ -93,14 +93,10 @@ specifics <- c(
   x = "But you broke my heart."
 )
 
-s <- Statement(general, specifics)
-s
+throw(general, specifics)
 
 ## -----------------------------------------------------------------------------
-trigger(s)
-
-## -----------------------------------------------------------------------------
-trigger(s, as = "message")
+throw(general, specifics, as = "message")
 
 ## -----------------------------------------------------------------------------
 check_positive <- function(x) {
@@ -110,8 +106,7 @@ check_positive <- function(x) {
   if (is.na(x) || x <= 0) {
     general <- "`x` must be a positive number."
     specifics <- "`x` is `{x}`."
-    s <- Statement(general, specifics, env = list(x = x))
-    trigger(s)
+    throw(general, specifics, env = list(x = x))
   }
 }
 

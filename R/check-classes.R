@@ -1,3 +1,53 @@
+#' @inherit check_types
+#'
+#' @title Check Each Item's Class
+#'
+#' @description Check if each item of an argument has valid class,
+#' and if not, generate an error message.
+#'
+#' @param valid A character vector which contains valid classes.
+#'
+#' @export
+#'
+#' @examples
+#' # argument to check
+#' arg <- lapply(1:10, function(x) {class(x) <- c("a", "b"); x})
+#'
+#' check_classes(arg, "a")
+#'
+#' \dontrun{
+#' check_classes(arg, c("x", "y"))
+#' }
+check_classes <- function(x, valid, name = NULL, general = NULL,
+                          specific = NULL, supplement = NULL, ...) {
+  if (is.null(name)) {
+    name <- deparse(substitute(x))
+  }
+
+  if (is.null(specific)) {
+    specific <- "`{name}[[{i}]]` has class { join(feature, 'and') }."
+  }
+
+  specifics <- character(0)
+
+  for (i in seq_along(x)) {
+    x_i <- x[[i]]
+    pass <- inherits(x_i, valid)
+
+    if (!pass) {
+      feature <- class(x_i)
+      specifics <- c(specifics, glue::glue(specific))
+    }
+  }
+
+  if (is.null(general)) {
+    general <- "Each item of `{name}` must have class { join(valid) }."
+  }
+
+  throw(general, specifics, environment(), ...)
+}
+
+
 #' @inherit check_length
 #'
 #' @title Check Binary Operator's Arguments' Classes
@@ -43,26 +93,6 @@ check_binary_classes <- function(x, y, valid_x, valid_y = NULL,
                                  operator = NULL, commutative = NULL,
                                  general = NULL, specific = NULL,
                                  supplement = NULL, ...) {
-  # check arguments
-  g <- getOption("erify.general")
-
-  check_type_valid(valid_x)
-
-  if (!is.null(valid_y)) {
-    check_type_valid(valid_y)
-  }
-
-  if (!is.null(operator)) {
-    .check_string(operator, general = g)
-  }
-
-  if (!is.null(commutative)) {
-    check_bool(commutative, general = g)
-  }
-
-  check_arguments(NULL, general, specific, supplement)
-
-  # normalize `commutative`
   if (is.null(commutative)) {
     commutative <- TRUE
   }
@@ -78,18 +108,18 @@ check_binary_classes <- function(x, y, valid_x, valid_y = NULL,
 
     # based on `valid_y`
     if (is.null(valid_y)) {
-      general <- "Both sides{s_operator} must have class { .join(valid_x) }."
+      general <- "Both sides{s_operator} must have class { join(valid_x) }."
     } else {
       # based on `commutative`
       if (commutative) {
         general <- paste(
-          "One side{s_operator} must have class { .join(valid_x) },",
-          "the other side { .join(valid_y) }."
+          "One side{s_operator} must have class { join(valid_x) },",
+          "the other side { join(valid_y) }."
         )
       } else {
         general <- paste(
-          "The left side{s_operator} must have class { .join(valid_x) },",
-          "the right side { .join(valid_y) }."
+          "The left side{s_operator} must have class { join(valid_x) },",
+          "the right side { join(valid_y) }."
         )
       }
     }
@@ -104,10 +134,9 @@ check_binary_classes <- function(x, y, valid_x, valid_y = NULL,
   pass <- inherits(x, valid_x) && inherits(y, valid_y)
 
   if (commutative) {
-    pass %<>% any(inherits(y, valid_x) && inherits(x, valid_y))
+    pass <- any(pass, inherits(y, valid_x) && inherits(x, valid_y))
   }
 
-  # early return
   if (pass) {
     return(invisible())
   }
@@ -119,11 +148,11 @@ check_binary_classes <- function(x, y, valid_x, valid_y = NULL,
   # specifics
   if (is.null(specific)) {
     specific <- paste(
-      "The left side has class { .join(feature_x, 'and') },",
-      "right side { .join(feature_y, 'and') }."
+      "The left side has class { join(feature_x, 'and') },",
+      "right side { join(feature_y, 'and') }."
     )
   }
 
   specifics <- c(specific, supplement)
-  .Statement(general, specifics, environment(), ...) %>% .trigger()
+  throw(general, specifics, environment(), ...)
 }
