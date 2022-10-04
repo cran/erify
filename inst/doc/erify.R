@@ -125,16 +125,3 @@ back_quote(c(1, 2, NA))
 arg <- "Pink Florence"
 check_content(arg, x)
 
-## -----------------------------------------------------------------------------
-is_rmd()
-# the code is running in a R Markdown file
-
-where()
-# the output format is HTML
-
-is_rstudio()
-# not in RStudio
-
-is_jupyter()
-# not in a Jupyter Notebook
-
