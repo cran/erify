@@ -1,7 +1,7 @@
 Package: erify
 Type: Package
 Title: Check Arguments and Generate Readable Error Messages
-Version: 0.4.0
+Version: 0.6.0
 Author: Renfei Mao
 Maintainer: Renfei Mao <renfeimao@gmail.com>
 Description: Provides several validator functions for checking if arguments
@@ -13,11 +13,11 @@ Description: Provides several validator functions for checking if arguments
 License: MIT + file LICENSE
 URL: https://github.com/flujoo/erify, https://flujoo.github.io/erify/
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.1
 Imports: glue
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-10-04 12:12:47 UTC; flujoo
+Packaged: 2024-06-30 09:04:53 UTC; fei
 Repository: CRAN
-Date/Publication: 2022-10-04 12:30:07 UTC
+Date/Publication: 2024-06-30 09:30:05 UTC
